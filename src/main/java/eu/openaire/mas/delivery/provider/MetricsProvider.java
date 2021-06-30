@@ -1,6 +1,6 @@
 package eu.openaire.mas.delivery.provider;
 
-import eu.openaire.mas.delivery.KPIEntry;
+import eu.openaire.mas.delivery.MetricEntry;
 
 /**
  * Metrics delivery module. 
@@ -10,5 +10,13 @@ import eu.openaire.mas.delivery.KPIEntry;
  */
 public interface MetricsProvider {
 
-    KPIEntry deliver(String groupId, String metricId);
+    /**
+     * Delivers metric details.
+     */
+    MetricEntry deliver(String groupId, String metricId, String from, String to);
+    
+    /**
+     * Lists metric identifiers for a given group.
+     */
+    String[] list(String groupId);
 }

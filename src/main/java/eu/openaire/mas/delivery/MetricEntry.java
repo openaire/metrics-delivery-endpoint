@@ -5,7 +5,7 @@ package eu.openaire.mas.delivery;
  * @author mhorst
  *
  */
-public class KPIEntry {
+public class MetricEntry {
 
     private final String groupId;
 
@@ -13,7 +13,7 @@ public class KPIEntry {
     
     private final Object value;
     
-    public KPIEntry(String groupId, String metricId, Object value) {
+    public MetricEntry(String groupId, String metricId, Object value) {
         super();
         this.groupId = groupId;
         this.metricId = metricId;

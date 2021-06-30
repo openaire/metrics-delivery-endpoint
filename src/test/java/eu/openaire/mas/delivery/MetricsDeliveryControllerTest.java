@@ -35,11 +35,11 @@ public class MetricsDeliveryControllerTest {
         String familyId = "someFamId";
         String name = "someName";
         String value = "1";
-        KPIEntry kpiEntry = new KPIEntry(familyId, name, value);        
-        Mockito.when(metricsProvider.deliver(familyId, name)).thenReturn(kpiEntry);
+        MetricEntry kpiEntry = new MetricEntry(familyId, name, value);        
+        Mockito.when(metricsProvider.deliver(familyId, name, null, null)).thenReturn(kpiEntry);
         
         // execute
-        KPIEntry result = metricsDeliveryController.deliver(familyId, name);
+        MetricEntry result = metricsDeliveryController.deliver(familyId, name, null, null);
         
         // assert
         assertNotNull(result);
