@@ -15,7 +15,7 @@ import eu.openaire.mas.delivery.provider.MetricsProvider;
  *
  */
 @RestController
-public class MetricsDeliveryController {
+public class MetricsDeliveryController implements MetricsDelivery {
 
     @Autowired
     private MetricsProvider metricsProvider;
