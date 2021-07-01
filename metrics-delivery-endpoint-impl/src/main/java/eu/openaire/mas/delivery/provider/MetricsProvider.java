@@ -1,5 +1,7 @@
 package eu.openaire.mas.delivery.provider;
 
+import java.util.Set;
+
 import eu.openaire.mas.delivery.MetricEntry;
 
 /**
@@ -18,5 +20,5 @@ public interface MetricsProvider {
     /**
      * Lists metric identifiers for a given group.
      */
-    String[] list(String groupId);
+    Set<String> list(String groupId);
 }

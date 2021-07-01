@@ -1,0 +1,10 @@
+{
+	"prometheus_server": {
+	   "goGcDurationSecs": {"query": "go_gc_duration_seconds", "isCounter": false},
+	   "engineQueryes": {"query": "prometheus_engine_queries", "isCounter": true}
+	},
+	"dummy_service": {
+	   "goGcDurationSecs": {"query": "go_gc_duration_seconds", "isCounter": false},
+	   "engineQueryes": {"query": "prometheus_engine_queries", "isCounter": true}
+	}
+}

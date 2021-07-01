@@ -1,0 +1,10 @@
+{
+	"group1": {
+	   "metric11": {"query": "query11", "isCounter": false},
+	   "metric12": {"query": "query12", "isCounter": true}
+	},
+	"group2": {
+	   "metric21": {"query": "query21", "isCounter": false},
+	   "metric22": {"query": "query22", "isCounter": true}
+	}
+}

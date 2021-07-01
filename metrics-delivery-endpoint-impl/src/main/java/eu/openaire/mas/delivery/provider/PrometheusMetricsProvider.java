@@ -3,27 +3,24 @@ package eu.openaire.mas.delivery.provider;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicLong;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import eu.openaire.mas.delivery.MetricEntry;
+import eu.openaire.mas.delivery.mapping.MappingProvider;
 
-/**
- * Embarrasingly simple metrics provider.
- * 
- * @author mhorst
- *
- */
+@Primary
 @Service
-public class DummyMetricsProvider implements MetricsProvider {
+public class PrometheusMetricsProvider implements MetricsProvider {
 
-    private static final String template = "measurements count: %s";
-    private final AtomicLong counter = new AtomicLong();
-
+    @Autowired
+    MappingProvider mappingProvider;
+    
     @Override
     public MetricEntry deliver(String groupId, String metricId, String from, String to) {
-        return new MetricEntry(groupId, metricId, String.format(template, counter.incrementAndGet()));
+        return new MetricEntry(groupId, metricId, "value");
     }
 
     @Override

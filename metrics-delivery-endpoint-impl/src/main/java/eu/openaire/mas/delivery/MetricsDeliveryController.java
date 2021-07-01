@@ -1,5 +1,7 @@
 package eu.openaire.mas.delivery;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +34,8 @@ public class MetricsDeliveryController implements MetricsDelivery {
     @GetMapping("/metrics/{groupId}")
     public String[] list(
             @PathVariable(value = "groupId") String groupId) {
-        return metricsProvider.list(groupId);
+        Set<String> result = metricsProvider.list(groupId);
+        return result != null ? result.toArray(new String[result.size()]) : new String[0];
     }
     
     public void setMetricsProvider(MetricsProvider metricsProvider) {
