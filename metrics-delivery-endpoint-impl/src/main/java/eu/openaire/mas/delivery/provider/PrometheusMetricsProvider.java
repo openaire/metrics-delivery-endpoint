@@ -1,7 +1,5 @@
 package eu.openaire.mas.delivery.provider;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +9,11 @@ import org.springframework.stereotype.Service;
 import eu.openaire.mas.delivery.MetricEntry;
 import eu.openaire.mas.delivery.mapping.MappingProvider;
 
+/**
+ * Metrics provider implementation relying on the prometheus backend.
+ * @author mhorst
+ *
+ */
 @Primary
 @Service
 public class PrometheusMetricsProvider implements MetricsProvider {
@@ -25,7 +28,7 @@ public class PrometheusMetricsProvider implements MetricsProvider {
 
     @Override
     public Set<String> list(String groupId) {
-        return new HashSet<String>(Arrays.asList(new String[] {"dummy"}));
+        return mappingProvider.listMetrics(groupId);
     }
-
+    
 }

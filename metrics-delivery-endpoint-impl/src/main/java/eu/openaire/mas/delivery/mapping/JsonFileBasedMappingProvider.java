@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
+
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
@@ -17,6 +17,10 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.devtools.filewatch.ChangedFile;
+import org.springframework.boot.devtools.filewatch.ChangedFile.Type;
+import org.springframework.boot.devtools.filewatch.ChangedFiles;
+import org.springframework.boot.devtools.filewatch.FileChangeListener;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +34,7 @@ import com.google.gson.reflect.TypeToken;
  *
  */
 @Service
-public class JsonFileBasedMappingProvider implements MappingProvider {
+public class JsonFileBasedMappingProvider implements MappingProvider, FileChangeListener {
 
     @Value("${metrics.mapping.location}")
     private Resource fileLocation;
@@ -45,7 +49,6 @@ public class JsonFileBasedMappingProvider implements MappingProvider {
     @PostConstruct
     public void initialize() {
         initializeMappings();
-        // FIXME subscribe to filechanges notifications (handle file update);
     }
 
     private void initializeMappings() {
@@ -59,6 +62,31 @@ public class JsonFileBasedMappingProvider implements MappingProvider {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+    
+    @Override
+    public void onChange(Set<ChangedFiles> changeSet) {
+        for(ChangedFiles cFiles : changeSet) {
+            for(ChangedFile cFile: cFiles.getFiles()) {
+                if(isMappingFile(cFile)) {
+                    if (cFile.getType().equals(Type.DELETE)) {
+                        metricMappings.clear();
+                    } else if (cFile.getType().equals(Type.ADD) || cFile.getType().equals(Type.MODIFY)) {
+                        initializeMappings();
+                    }
+                    log.info("Operation: " + cFile.getType() 
+                      + " On file: "+ cFile.getFile().getAbsolutePath() + " is done");
+                    return;
+                }
+            }
+        }
+    }
+    
+    /**
+     * Checks whether notification is related to a mapping file.
+     */
+    private boolean isMappingFile(ChangedFile cFile) {
+        return fileLocation.getFilename().contentEquals(cFile.getRelativeName());
     }
     
     @Override
@@ -89,7 +117,7 @@ public class JsonFileBasedMappingProvider implements MappingProvider {
     
     static Map<String, Map<String, PrometheusMetricMeta>> getMap(String jsonContent) {
         Gson gson = new Gson();
-        Type empMapType = new TypeToken<Map<String, Map<String, PrometheusMetricMeta>>>() {}.getType();
+        java.lang.reflect.Type empMapType = new TypeToken<Map<String, Map<String, PrometheusMetricMeta>>>() {}.getType();
         return gson.fromJson(jsonContent, empMapType);
     }
 
