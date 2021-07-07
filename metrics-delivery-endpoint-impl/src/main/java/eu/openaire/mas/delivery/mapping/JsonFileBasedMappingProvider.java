@@ -97,11 +97,11 @@ public class JsonFileBasedMappingProvider implements MappingProvider, FileChange
             if (result != null) {
                 return result;
             } else {
-                throw new NoSuchElementException("unidentified metric: " + metricId + 
-                        " withing the group: " + groupId);
+                throw new NoSuchElementException(String.format("unidentified metric: '%s'" + 
+                        " within the group: '%s'", metricId, groupId));
             }
         } else {
-            throw new NoSuchElementException("unidentified group: " + groupId);    
+            throw new NoSuchElementException(String.format("unidentified group: '%s'", groupId));    
         }
     }
     

@@ -10,6 +10,13 @@ public class MatrixResponse {
     static class MatrixData {
         String resultType;
         List<MatrixResult> result;
+        
+        public String getResultType() {
+            return resultType;
+        }
+        public List<MatrixResult> getResult() {
+            return result;
+        }
     }
 
     static class MatrixResult {
@@ -24,5 +31,22 @@ public class MatrixResponse {
                 values == null ? "" : values.toString()
             );
         }
+
+        public Map<String, String> getMetric() {
+            return metric;
+        }
+
+        public List<List<Float>> getValues() {
+            return values;
+        }
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public MatrixData getData() {
+        return data;
+    }
+
 }
