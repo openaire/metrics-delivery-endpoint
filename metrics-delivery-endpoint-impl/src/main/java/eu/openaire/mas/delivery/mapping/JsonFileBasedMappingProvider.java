@@ -4,10 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -90,28 +88,28 @@ public class JsonFileBasedMappingProvider implements MappingProvider, FileChange
     }
     
     @Override
-    public PrometheusMetricMeta get(String groupId, String metricId) {
+    public PrometheusMetricMeta get(String groupId, String metricId) throws MappingNotFoundException {
         Map<String, PrometheusMetricMeta> groupMap = metricMappings.get(groupId);
         if (groupMap != null) {
             PrometheusMetricMeta result = groupMap.get(metricId);
             if (result != null) {
                 return result;
             } else {
-                throw new NoSuchElementException(String.format("unidentified metric: '%s'" + 
+                throw new MappingNotFoundException(String.format("unidentified metric: '%s'" + 
                         " within the group: '%s'", metricId, groupId));
             }
         } else {
-            throw new NoSuchElementException(String.format("unidentified group: '%s'", groupId));    
+            throw new MappingNotFoundException(String.format("unidentified group: '%s'", groupId));    
         }
     }
     
     @Override
-    public Set<String> listMetrics(String groupId) {
+    public Set<String> listMetrics(String groupId) throws MappingNotFoundException {
         Map<String, PrometheusMetricMeta> groupMap = metricMappings.get(groupId);
         if (groupMap != null) {
             return groupMap.keySet();
         } else {
-            throw new NoSuchElementException("unidentified group: " + groupId);    
+            throw new MappingNotFoundException("unidentified group: " + groupId);    
         }
     }
     
