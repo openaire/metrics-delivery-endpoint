@@ -39,7 +39,7 @@ public class MetricsDeliveryControllerTest {
         Mockito.when(metricsProvider.deliver(familyId, name, null, null)).thenReturn(kpiEntry);
         
         // execute
-        MetricEntry result = metricsDeliveryController.deliver(familyId, name, null, null);
+        MetricEntry result = metricsDeliveryController.deliver(familyId, name);
         
         // assert
         assertNotNull(result);
