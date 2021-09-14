@@ -10,6 +10,7 @@ import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -100,6 +101,11 @@ public class JsonFileBasedMappingProvider implements MappingProvider {
         } else {
             throw new MappingNotFoundException("unidentified group: " + groupId);    
         }
+    }
+
+    @Override
+    public Set<String> listGroups() {
+	return new HashSet<>(metricMappings.keySet());
     }
     
     /**

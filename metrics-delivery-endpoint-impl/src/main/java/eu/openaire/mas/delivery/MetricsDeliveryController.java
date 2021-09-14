@@ -34,7 +34,13 @@ public class MetricsDeliveryController implements MetricsDelivery {
         Set<String> result = metricsProvider.list(groupId);
         return result != null ? result.toArray(new String[result.size()]) : new String[0];
     }
-    
+
+    @GetMapping("/resources")
+    public String[] listResources() {
+	Set<String> resourceIds = metricsProvider.listResources();
+	return resourceIds.toArray(new String[resourceIds.size()]);
+    }
+
     public void setMetricsProvider(MetricsProvider metricsProvider) {
         this.metricsProvider = metricsProvider;
     }

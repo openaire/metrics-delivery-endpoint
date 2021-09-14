@@ -85,5 +85,9 @@ public class PrometheusMetricsProvider implements MetricsProvider {
                     "maping not found for groupId: " + groupId, e);
         }
     }
-    
+
+    @Override
+    public Set<String> listResources() {
+	return mappingProvider.listGroups();
+    }
 }
