@@ -1,7 +1,13 @@
 package eu.openaire.mas.delivery;
 
+import static java.util.Collections.singleton;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,5 +52,17 @@ public class MetricsDeliveryControllerTest {
         assertEquals(familyId, result.getResourceId());
         assertEquals(name, result.getKpiId());
         assertEquals(value, result.getValue());
+    }
+
+    @Test
+    public void listResourcesPassesIdReturnedByProvider() {
+	String resId = "resource";
+	Set<String> resourceSet = singleton(resId);
+	when(metricsProvider.listResources()).thenReturn(resourceSet);
+
+	String[] result = metricsDeliveryController.listResources();
+
+	HashSet<String> resultSet = new HashSet<String>(Arrays.asList(result));
+	assertEquals(resourceSet, resultSet);
     }
 }

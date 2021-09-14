@@ -30,4 +30,8 @@ public class DummyMetricsProvider implements MetricsProvider {
         return new HashSet<String>(Arrays.asList(new String[] {"dummy"}));
     }
 
+    @Override
+    public Set<String> listResources() {
+	return new HashSet<String>(Arrays.asList(new String[] {"dummy"}));
+    }
 }
