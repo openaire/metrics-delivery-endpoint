@@ -7,25 +7,25 @@ package eu.openaire.mas.delivery;
  */
 public class MetricEntry {
 
-    private final String groupId;
+    private final String resourceId;
 
-    private final String metricId;
+    private final String kpiId;
     
     private final Object value;
     
-    public MetricEntry(String groupId, String metricId, Object value) {
+    public MetricEntry(String resourceId, String kpiId, Object value) {
         super();
-        this.groupId = groupId;
-        this.metricId = metricId;
+        this.resourceId = resourceId;
+        this.kpiId = kpiId;
         this.value = value;
     }    
     
-    public String getGroupId() {
-        return groupId;
+    public String getResourceId() {
+        return resourceId;
     }
 
-    public String getMetricId() {
-        return metricId;
+    public String getKpiId() {
+        return kpiId;
     }
 
     public Object getValue() {
