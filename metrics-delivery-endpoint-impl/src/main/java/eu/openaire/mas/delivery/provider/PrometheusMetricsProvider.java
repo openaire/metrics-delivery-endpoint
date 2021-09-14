@@ -53,7 +53,8 @@ public class PrometheusMetricsProvider implements MetricsProvider {
                     // FIXME it is just a sample, include "from" and "to" params in querying
                     VectorResponse resp = prometheusClient.query(meta.getQuery());
                     if (STATUS_SUCCESS.equals(resp.getStatus())) {
-                        return new MetricEntry(groupId, metricId, resp.getData());    
+			float value = resp.getData().getResult().get(0).getValue().get(1);
+                        return new MetricEntry(groupId, metricId, value);
                     } else {
                         throw new RuntimeException(String.format("invalid status: %, full response: %s",
                                 resp.getStatus(), resp));

@@ -7,7 +7,7 @@ public class VectorResponse {
     String status;
     VectorData data;
 
-    static class VectorResult {
+    public static class VectorResult {
         Map<String, String> metric;
         List<Float> value;
 
@@ -29,7 +29,7 @@ public class VectorResponse {
         }
     }
 
-    static class VectorData {
+    public static class VectorData {
         String resultType;
         List<VectorResult> result;
         

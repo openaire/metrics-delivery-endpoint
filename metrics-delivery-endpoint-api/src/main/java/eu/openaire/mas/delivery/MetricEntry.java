@@ -11,9 +11,9 @@ public class MetricEntry {
 
     private final String kpiId;
     
-    private final Object value;
+    private final float value;
     
-    public MetricEntry(String resourceId, String kpiId, Object value) {
+    public MetricEntry(String resourceId, String kpiId, float value) {
         super();
         this.resourceId = resourceId;
         this.kpiId = kpiId;
@@ -28,7 +28,7 @@ public class MetricEntry {
         return kpiId;
     }
 
-    public Object getValue() {
+    public float getValue() {
         return value;
     }
     

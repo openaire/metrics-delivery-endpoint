@@ -34,7 +34,7 @@ public class MetricsDeliveryControllerTest {
         // given
         String familyId = "someFamId";
         String name = "someName";
-        String value = "1";
+        float value = 1;
         MetricEntry kpiEntry = new MetricEntry(familyId, name, value);        
         Mockito.when(metricsProvider.deliver(familyId, name, null, null)).thenReturn(kpiEntry);
         
