@@ -43,8 +43,8 @@ public class MetricsDeliveryControllerTest {
         
         // assert
         assertNotNull(result);
-        assertEquals(familyId, result.getGroupId());
-        assertEquals(name, result.getMetricId());
+        assertEquals(familyId, result.getResourceId());
+        assertEquals(name, result.getKpiId());
         assertEquals(value, result.getValue());
     }
 }

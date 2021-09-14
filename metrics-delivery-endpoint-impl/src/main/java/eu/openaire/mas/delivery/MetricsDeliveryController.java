@@ -22,18 +22,18 @@ public class MetricsDeliveryController implements MetricsDelivery {
     @Autowired
     private MetricsProvider metricsProvider;
 
-    @GetMapping("/metrics/{groupId}/{metricId}")
+    @GetMapping("/metrics/{resourceId}/{kpiId}")
     public MetricEntry deliver(
-            @PathVariable(value = "groupId") String groupId,
-            @PathVariable(value = "metricId") String metricId,
+            @PathVariable(value = "resourceId") String groupId,
+            @PathVariable(value = "kpiId") String metricId,
             @RequestParam(value = "from", required = false) String from,
             @RequestParam(value = "to", required = false) String to) {
         return metricsProvider.deliver(groupId, metricId, from, to);
     }
     
-    @GetMapping("/metrics/{groupId}")
+    @GetMapping("/metrics/{resourceId}")
     public String[] list(
-            @PathVariable(value = "groupId") String groupId) {
+            @PathVariable(value = "resourceId") String groupId) {
         Set<String> result = metricsProvider.list(groupId);
         return result != null ? result.toArray(new String[result.size()]) : new String[0];
     }
