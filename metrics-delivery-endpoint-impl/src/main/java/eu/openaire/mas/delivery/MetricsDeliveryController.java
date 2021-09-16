@@ -29,16 +29,16 @@ public class MetricsDeliveryController implements MetricsDelivery {
     }
     
     @GetMapping("/metrics/{resourceId}")
-    public IdList list(
+    public ItemList<String> list(
             @PathVariable(value = "resourceId") String groupId) {
         Set<String> result = metricsProvider.list(groupId);
-	return new IdList(result);
+	return new ItemList<>(result);
     }
 
     @GetMapping("/resources")
-    public IdList listResources() {
+    public ItemList<String> listResources() {
 	Set<String> resourceIds = metricsProvider.listResources();
-	return new IdList(resourceIds);
+	return new ItemList<>(resourceIds);
     }
 
     public void setMetricsProvider(MetricsProvider metricsProvider) {

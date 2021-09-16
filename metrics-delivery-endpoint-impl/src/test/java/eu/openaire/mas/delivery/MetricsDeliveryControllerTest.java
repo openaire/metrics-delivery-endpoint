@@ -60,7 +60,7 @@ public class MetricsDeliveryControllerTest {
 	Set<String> resourceSet = singleton(resId);
 	when(metricsProvider.listResources()).thenReturn(resourceSet);
 
-	IdList result = metricsDeliveryController.listResources();
+	ItemList<String> result = metricsDeliveryController.listResources();
 
 	HashSet<String> resultSet = new HashSet<>(result.getItems());
 	assertEquals(resourceSet, resultSet);
