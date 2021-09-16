@@ -22,6 +22,7 @@ public class MetricsDeliveryController implements MetricsDelivery {
     private MetricsProvider metricsProvider;
 
     @GetMapping("/metrics/{resourceId}/{kpiId}")
+    @Override
     public MetricEntry deliver(
             @PathVariable(value = "resourceId") String groupId,
             @PathVariable(value = "kpiId") String metricId) {
@@ -29,6 +30,7 @@ public class MetricsDeliveryController implements MetricsDelivery {
     }
     
     @GetMapping("/metrics/{resourceId}")
+    @Override
     public ItemList<String> list(
             @PathVariable(value = "resourceId") String groupId) {
         Set<String> result = metricsProvider.list(groupId);
@@ -36,6 +38,7 @@ public class MetricsDeliveryController implements MetricsDelivery {
     }
 
     @GetMapping("/resources")
+    @Override
     public ItemList<String> listResources() {
 	Set<String> resourceIds = metricsProvider.listResources();
 	return new ItemList<>(resourceIds);
