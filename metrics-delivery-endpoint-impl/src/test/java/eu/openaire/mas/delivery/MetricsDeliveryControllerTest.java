@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -60,9 +59,9 @@ public class MetricsDeliveryControllerTest {
 	Set<String> resourceSet = singleton(resId);
 	when(metricsProvider.listResources()).thenReturn(resourceSet);
 
-	String[] result = metricsDeliveryController.listResources();
+	ItemList<String> result = metricsDeliveryController.listResources();
 
-	HashSet<String> resultSet = new HashSet<String>(Arrays.asList(result));
+	HashSet<String> resultSet = new HashSet<>(result.getItems());
 	assertEquals(resourceSet, resultSet);
     }
 }
