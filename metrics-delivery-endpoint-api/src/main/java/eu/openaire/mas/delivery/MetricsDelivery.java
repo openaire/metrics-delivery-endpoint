@@ -12,5 +12,9 @@ public interface MetricsDelivery {
 
     ItemList<String> list(String groupId);
 
+    MetricMetadata describe(String groupId, String metricId);
+
+    ItemList<MetricMetadata> describeResource(String groupId);
+
     ItemList<String> listResources();
 }
