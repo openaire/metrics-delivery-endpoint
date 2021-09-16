@@ -10,6 +10,5 @@ public interface MetricsDelivery {
 
     MetricEntry deliver(String groupId, String metricId);
 
-    String[] list(String groupId);
-    
+    IdList list(String groupId);
 }
