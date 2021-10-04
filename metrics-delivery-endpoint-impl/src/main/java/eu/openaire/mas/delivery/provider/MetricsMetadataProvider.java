@@ -1,6 +1,6 @@
 package eu.openaire.mas.delivery.provider;
 
-import java.util.List;
+import java.util.Map;
 
 import eu.openaire.mas.delivery.MetricMetadata;
 
@@ -14,6 +14,5 @@ public interface MetricsMetadataProvider {
     /**
      * Returns metric metadata for all metrics in a group
      */
-    List<MetricMetadata> describeAll(String groupId);
-
+    Map<String, MetricMetadata> describeAll(String groupId);
 }

@@ -1,7 +1,7 @@
 package eu.openaire.mas.delivery.provider;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,11 +21,11 @@ public class DummyMetricsMetadataProvider implements MetricsMetadataProvider {
     }
 
     @Override
-    public List<MetricMetadata> describeAll(String groupId) {
-	List<MetricMetadata> result = new ArrayList<>();
+    public Map<String, MetricMetadata> describeAll(String groupId) {
+	Map<String, MetricMetadata> result = new HashMap<>();
 
 	for (String metricId : metricsProvider.list(groupId)) {
-	    result.add(describe(groupId, metricId));
+	    result.put(metricId, describe(groupId, metricId));
 	}
 
 	return result;

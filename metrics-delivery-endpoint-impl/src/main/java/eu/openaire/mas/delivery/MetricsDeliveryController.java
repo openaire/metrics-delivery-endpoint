@@ -1,5 +1,6 @@
 package eu.openaire.mas.delivery;
 
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +44,9 @@ public class MetricsDeliveryController implements MetricsDelivery {
 
     @Override
     @GetMapping("/metrics/{resourceId}")
-    public ItemList<MetricMetadata> describeResource(
+    public Map<String, MetricMetadata> describeResource(
 	    @PathVariable(value = "resourceId") String resourceId) {
-        return new ItemList<>(metricsMetadataProvider.describeAll(resourceId));
+        return metricsMetadataProvider.describeAll(resourceId);
     }
 
     @Override
