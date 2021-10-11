@@ -1,5 +1,7 @@
 package eu.openaire.mas.delivery;
 
+import java.util.Map;
+
 /**
  * Metrics delivery API.
  * 
@@ -8,8 +10,13 @@ package eu.openaire.mas.delivery;
  */
 public interface MetricsDelivery {
 
-    MetricEntry deliver(String groupId, String metricId, String from, String to);
+    MetricEntry deliver(String groupId, String metricId);
 
-    String[] list(String groupId);
-    
+    ItemList<String> list(String groupId);
+
+    MetricMetadata describe(String groupId, String metricId);
+
+    Map<String, MetricMetadata> describeResource(String groupId);
+
+    ItemList<String> listResources();
 }

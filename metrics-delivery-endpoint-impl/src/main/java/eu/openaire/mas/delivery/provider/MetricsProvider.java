@@ -21,4 +21,9 @@ public interface MetricsProvider {
      * Lists metric identifiers for a given group.
      */
     Set<String> list(String groupId);
+
+    /**
+     * List all known resource identifiers
+     */
+    Set<String> listResources();
 }

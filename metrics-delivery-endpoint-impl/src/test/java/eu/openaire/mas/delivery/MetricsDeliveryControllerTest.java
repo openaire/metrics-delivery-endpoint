@@ -1,7 +1,12 @@
 package eu.openaire.mas.delivery;
 
+import static java.util.Collections.singleton;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,17 +39,29 @@ public class MetricsDeliveryControllerTest {
         // given
         String familyId = "someFamId";
         String name = "someName";
-        String value = "1";
+        float value = 1;
         MetricEntry kpiEntry = new MetricEntry(familyId, name, value);        
         Mockito.when(metricsProvider.deliver(familyId, name, null, null)).thenReturn(kpiEntry);
         
         // execute
-        MetricEntry result = metricsDeliveryController.deliver(familyId, name, null, null);
+        MetricEntry result = metricsDeliveryController.deliver(familyId, name);
         
         // assert
         assertNotNull(result);
-        assertEquals(familyId, result.getGroupId());
-        assertEquals(name, result.getMetricId());
+        assertEquals(familyId, result.getResourceId());
+        assertEquals(name, result.getKpiId());
         assertEquals(value, result.getValue());
+    }
+
+    @Test
+    public void listResourcesPassesIdReturnedByProvider() {
+	String resId = "resource";
+	Set<String> resourceSet = singleton(resId);
+	when(metricsProvider.listResources()).thenReturn(resourceSet);
+
+	ItemList<String> result = metricsDeliveryController.listResources();
+
+	HashSet<String> resultSet = new HashSet<>(result.getItems());
+	assertEquals(resourceSet, resultSet);
     }
 }
