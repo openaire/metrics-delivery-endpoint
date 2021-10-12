@@ -72,4 +72,14 @@
         </dependencies>
     </dependencyManagement>
 
+    <scm>
+      <developerConnection>scm:git:ssh://git@github.com/openaire/metrics-delivery-endpoint.git</developerConnection>
+    </scm>
+
+    <distributionManagement>
+      <repository>
+        <id>iis-releases</id>
+        <url>https://maven.ceon.pl/artifactory/iis-releases</url>
+      </repository>
+    </distributionManagement>
 </project>
