@@ -16,16 +16,16 @@ public class DummyMetricsMetadataProvider implements MetricsMetadataProvider {
     private MetricsProvider metricsProvider;
 
     @Override
-    public MetricMetadata describe(String groupId, String metricId) {
-	return new MetricMetadata(groupId+" "+metricId, "Lorem ipsum...", "attoparsec", MetricKind.STATE);
+    public MetricMetadata describe(String resourceId, String metricId) {
+	return new MetricMetadata(resourceId+" "+metricId, "Lorem ipsum...", "attoparsec", MetricKind.STATE);
     }
 
     @Override
-    public Map<String, MetricMetadata> describeAll(String groupId) {
+    public Map<String, MetricMetadata> describeAll(String resourceId) {
 	Map<String, MetricMetadata> result = new HashMap<>();
 
-	for (String metricId : metricsProvider.list(groupId)) {
-	    result.put(metricId, describe(groupId, metricId));
+	for (String metricId : metricsProvider.list(resourceId)) {
+	    result.put(metricId, describe(resourceId, metricId));
 	}
 
 	return result;

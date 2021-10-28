@@ -40,8 +40,8 @@ public class MetricsDeliveryControllerTest {
         String familyId = "someFamId";
         String name = "someName";
         float value = 1;
-        MetricEntry kpiEntry = new MetricEntry(familyId, name, value);        
-        Mockito.when(metricsProvider.deliver(familyId, name, null, null)).thenReturn(kpiEntry);
+        MetricEntry metricEntry = new MetricEntry(familyId, name, value);
+        Mockito.when(metricsProvider.deliver(familyId, name, null, null)).thenReturn(metricEntry);
         
         // execute
         MetricEntry result = metricsDeliveryController.deliver(familyId, name);
@@ -49,7 +49,7 @@ public class MetricsDeliveryControllerTest {
         // assert
         assertNotNull(result);
         assertEquals(familyId, result.getResourceId());
-        assertEquals(name, result.getKpiId());
+        assertEquals(name, result.getMetricId());
         assertEquals(value, result.getValue());
     }
 

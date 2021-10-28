@@ -15,12 +15,12 @@ public interface MetricsProvider {
     /**
      * Delivers metric details.
      */
-    MetricEntry deliver(String groupId, String metricId, String from, String to);
+    MetricEntry deliver(String resourceId, String metricId, String from, String to);
     
     /**
-     * Lists metric identifiers for a given group.
+     * Lists metric identifiers for a given resource.
      */
-    Set<String> list(String groupId);
+    Set<String> list(String resourceId);
 
     /**
      * List all known resource identifiers

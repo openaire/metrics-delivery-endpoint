@@ -4,9 +4,9 @@ import java.util.Set;
 
 public interface MappingProvider {
 
-    PrometheusMetricMeta get(String groupId, String metricId) throws MappingNotFoundException;
+    PrometheusMetricMeta get(String resourceId, String metricId) throws MappingNotFoundException;
     
-    Set<String> listMetrics(String groupId) throws MappingNotFoundException;
+    Set<String> listMetrics(String resourceId) throws MappingNotFoundException;
 
-    Set<String> listGroups();
+    Set<String> listResources();
 }

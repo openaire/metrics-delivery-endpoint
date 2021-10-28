@@ -10,13 +10,13 @@ import java.util.Map;
  */
 public interface MetricsDelivery {
 
-    MetricEntry deliver(String groupId, String metricId);
+    MetricEntry deliver(String resourceId, String metricId);
 
-    ItemList<String> list(String groupId);
+    ItemList<String> list(String resourceId);
 
-    MetricMetadata describe(String groupId, String metricId);
+    MetricMetadata describe(String resourceId, String metricId);
 
-    Map<String, MetricMetadata> describeResource(String groupId);
+    Map<String, MetricMetadata> describeResource(String resourceId);
 
     ItemList<String> listResources();
 }

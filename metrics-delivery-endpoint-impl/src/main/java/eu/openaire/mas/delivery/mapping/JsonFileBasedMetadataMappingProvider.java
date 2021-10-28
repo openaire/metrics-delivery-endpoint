@@ -38,7 +38,7 @@ import eu.openaire.mas.delivery.MetricMetadata;
 import eu.openaire.mas.delivery.provider.MetricsMetadataProvider;
 
 /**
- * Reads metadata mappings for KPIs from a JSON file.
+ * Reads metadata mappings for metrics from a JSON file.
  */
 @Primary
 @Service
@@ -50,7 +50,7 @@ public class JsonFileBasedMetadataMappingProvider implements MetricsMetadataProv
     private static final Logger log = LoggerFactory.getLogger(JsonFileBasedMetadataMappingProvider.class);
 
     /**
-     * Internal mapping identified by groupId and metricId on a 2nd map level.
+     * Internal mapping identified by resourceId and metricId on a 2nd map level.
      */
     private Map<String, Map<String,MetricMetadata>> metadataMappings = new ConcurrentHashMap<String, Map<String,MetricMetadata>>();
 
@@ -81,52 +81,52 @@ public class JsonFileBasedMetadataMappingProvider implements MetricsMetadataProv
         fileWatcherExecutorService.shutdownNow();
     }
 
-    private MetricMetadata get(String groupId, String metricId) throws MappingNotFoundException {
-        Map<String, MetricMetadata> groupMap = metadataMappings.get(groupId);
-        if (groupMap != null) {
-            MetricMetadata result = groupMap.get(metricId);
+    private MetricMetadata get(String resourceId, String metricId) throws MappingNotFoundException {
+        Map<String, MetricMetadata> resourceMap = metadataMappings.get(resourceId);
+        if (resourceMap != null) {
+            MetricMetadata result = resourceMap.get(metricId);
             if (result != null) {
                 return result;
             } else {
                 throw new MappingNotFoundException(String.format("unidentified metric: '%s'" +
-                        " within the group: '%s'", metricId, groupId));
+                        " for the resource: '%s'", metricId, resourceId));
             }
         } else {
-            throw new MappingNotFoundException(String.format("unidentified group: '%s'", groupId));
+            throw new MappingNotFoundException(String.format("unidentified resource: '%s'", resourceId));
         }
     }
 
-    private Set<String> listMetrics(String groupId) throws MappingNotFoundException {
-        Map<String, MetricMetadata> groupMap = metadataMappings.get(groupId);
-        if (groupMap != null) {
-            return groupMap.keySet();
+    private Set<String> listMetrics(String resourceId) throws MappingNotFoundException {
+        Map<String, MetricMetadata> resourceMap = metadataMappings.get(resourceId);
+        if (resourceMap != null) {
+            return resourceMap.keySet();
         } else {
-            throw new MappingNotFoundException("unidentified group: " + groupId);
+            throw new MappingNotFoundException("unidentified resource: " + resourceId);
         }
     }
 
     @Override
-    public MetricMetadata describe(String groupId, String metricId) {
+    public MetricMetadata describe(String resourceId, String metricId) {
 	try {
-	    return get(groupId, metricId);
+	    return get(resourceId, metricId);
 	} catch (MappingNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    String.format("maping not found for groupId: '%s' and metricId: '%s'",
-                            groupId, metricId), e);
+                    String.format("maping not found for resourceId: '%s' and metricId: '%s'",
+                            resourceId, metricId), e);
         }
     }
 
     @Override
-    public Map<String, MetricMetadata> describeAll(String groupId) {
+    public Map<String, MetricMetadata> describeAll(String resourceId) {
 	Map<String, MetricMetadata> result = new HashMap<>();
 
 	try {
-	    for (String metricId : listMetrics(groupId)) {
-		result.put(metricId, describe(groupId, metricId));
+	    for (String metricId : listMetrics(resourceId)) {
+		result.put(metricId, describe(resourceId, metricId));
 	    }
 	} catch (MappingNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-		String.format("maping not found for groupId: '%s'", groupId), e);
+		String.format("maping not found for resourceId: '%s'", resourceId), e);
         }
 
 	return result;

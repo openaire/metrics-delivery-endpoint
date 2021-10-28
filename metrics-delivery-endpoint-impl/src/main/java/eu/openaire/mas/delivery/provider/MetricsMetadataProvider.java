@@ -9,10 +9,10 @@ public interface MetricsMetadataProvider {
     /**
      * Returns metric metadata
      */
-    MetricMetadata describe(String groupId, String metricId);
+    MetricMetadata describe(String resourceId, String metricId);
 
     /**
-     * Returns metric metadata for all metrics in a group
+     * Returns metric metadata for all metrics of a resource
      */
-    Map<String, MetricMetadata> describeAll(String groupId);
+    Map<String, MetricMetadata> describeAll(String resourceId);
 }

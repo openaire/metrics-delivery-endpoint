@@ -33,7 +33,7 @@ import com.google.gson.reflect.TypeToken;
 
 /**
  * Reads mappings from a set of files stored in a given directory.
- * Each filename identifies single group and encapsulates multiple metrics mappings.s
+ * Each filename identifies single resource and encapsulates multiple metrics mappings.s
  * @author mhorst
  *
  */
@@ -46,7 +46,7 @@ public class JsonFileBasedMappingProvider implements MappingProvider {
     private static final Logger log = LoggerFactory.getLogger(JsonFileBasedMappingProvider.class);
     
     /**
-     * Internal mapping identified by groupId and metricId on a 2nd map level.
+     * Internal mapping identified by resourceId and metricId on a 2nd map level.
      */
     private Map<String, Map<String,PrometheusMetricMeta>> metricMappings = new ConcurrentHashMap<String, Map<String,PrometheusMetricMeta>>();
     
@@ -78,33 +78,33 @@ public class JsonFileBasedMappingProvider implements MappingProvider {
     }
     
     @Override
-    public PrometheusMetricMeta get(String groupId, String metricId) throws MappingNotFoundException {
-        Map<String, PrometheusMetricMeta> groupMap = metricMappings.get(groupId);
-        if (groupMap != null) {
-            PrometheusMetricMeta result = groupMap.get(metricId);
+    public PrometheusMetricMeta get(String resourceId, String metricId) throws MappingNotFoundException {
+        Map<String, PrometheusMetricMeta> resourceMap = metricMappings.get(resourceId);
+        if (resourceMap != null) {
+            PrometheusMetricMeta result = resourceMap.get(metricId);
             if (result != null) {
                 return result;
             } else {
                 throw new MappingNotFoundException(String.format("unidentified metric: '%s'" + 
-                        " within the group: '%s'", metricId, groupId));
+                        " for the resource: '%s'", metricId, resourceId));
             }
         } else {
-            throw new MappingNotFoundException(String.format("unidentified group: '%s'", groupId));    
+            throw new MappingNotFoundException(String.format("unidentified resource: '%s'", resourceId));
         }
     }
     
     @Override
-    public Set<String> listMetrics(String groupId) throws MappingNotFoundException {
-        Map<String, PrometheusMetricMeta> groupMap = metricMappings.get(groupId);
-        if (groupMap != null) {
-            return groupMap.keySet();
+    public Set<String> listMetrics(String resourceId) throws MappingNotFoundException {
+        Map<String, PrometheusMetricMeta> resourceMap = metricMappings.get(resourceId);
+        if (resourceMap != null) {
+            return resourceMap.keySet();
         } else {
-            throw new MappingNotFoundException("unidentified group: " + groupId);    
+            throw new MappingNotFoundException("unidentified resource: " + resourceId);
         }
     }
 
     @Override
-    public Set<String> listGroups() {
+    public Set<String> listResources() {
 	return new HashSet<>(metricMappings.keySet());
     }
     

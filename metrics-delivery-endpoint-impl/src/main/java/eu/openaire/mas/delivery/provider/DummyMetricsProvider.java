@@ -21,12 +21,12 @@ public class DummyMetricsProvider implements MetricsProvider {
     private final AtomicLong counter = new AtomicLong();
 
     @Override
-    public MetricEntry deliver(String groupId, String metricId, String from, String to) {
-        return new MetricEntry(groupId, metricId, counter.incrementAndGet());
+    public MetricEntry deliver(String resourceId, String metricId, String from, String to) {
+        return new MetricEntry(resourceId, metricId, counter.incrementAndGet());
     }
 
     @Override
-    public Set<String> list(String groupId) {
+    public Set<String> list(String resourceId) {
         return new HashSet<String>(Arrays.asList(new String[] {"dummy"}));
     }
 

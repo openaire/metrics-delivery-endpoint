@@ -45,16 +45,16 @@ public class PrometheusMetricsProvider implements MetricsProvider {
     }
     
     @Override
-    public MetricEntry deliver(String groupId, String metricId, String from, String to) {
+    public MetricEntry deliver(String resourceId, String metricId, String from, String to) {
         try {
-            PrometheusMetricMeta meta = mappingProvider.get(groupId, metricId);
+            PrometheusMetricMeta meta = mappingProvider.get(resourceId, metricId);
             if (meta!=null) {
                 try {
                     // FIXME it is just a sample, include "from" and "to" params in querying
                     VectorResponse resp = prometheusClient.query(meta.getQuery());
                     if (STATUS_SUCCESS.equals(resp.getStatus())) {
 			float value = resp.getData().getResult().get(0).getValue().get(1);
-                        return new MetricEntry(groupId, metricId, value);
+                        return new MetricEntry(resourceId, metricId, value);
                     } else {
                         throw new RuntimeException(String.format("invalid status: %, full response: %s",
                                 resp.getStatus(), resp));
@@ -66,28 +66,28 @@ public class PrometheusMetricsProvider implements MetricsProvider {
             } else {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
                         String.format("unable to find query mappings for "
-                                + "group: %s and metric: %s", groupId, metricId));
+                                + "resource: %s and metric: %s", resourceId, metricId));
             }    
         } catch (MappingNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    String.format("maping not found for groupId: '%s' and metricId: '%s'", 
-                            groupId, metricId), e);
+                    String.format("maping not found for resourceId: '%s' and metricId: '%s'",
+                            resourceId, metricId), e);
         }
         
     }
 
     @Override
-    public Set<String> list(String groupId) {
+    public Set<String> list(String resourceId) {
         try {
-            return mappingProvider.listMetrics(groupId);
+            return mappingProvider.listMetrics(resourceId);
         } catch (MappingNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
-                    "maping not found for groupId: " + groupId, e);
+                    "maping not found for resourceId: " + resourceId, e);
         }
     }
 
     @Override
     public Set<String> listResources() {
-	return mappingProvider.listGroups();
+	return mappingProvider.listResources();
     }
 }

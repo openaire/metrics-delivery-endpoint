@@ -1,7 +1,7 @@
 package eu.openaire.mas.delivery;
 
 /**
- * Represents KPI record.
+ * Represents a metric record.
  * @author mhorst
  *
  */
@@ -9,14 +9,14 @@ public class MetricEntry {
 
     private final String resourceId;
 
-    private final String kpiId;
+    private final String metricId;
     
     private final float value;
     
-    public MetricEntry(String resourceId, String kpiId, float value) {
+    public MetricEntry(String resourceId, String metricId, float value) {
         super();
         this.resourceId = resourceId;
-        this.kpiId = kpiId;
+        this.metricId = metricId;
         this.value = value;
     }    
     
@@ -24,8 +24,8 @@ public class MetricEntry {
         return resourceId;
     }
 
-    public String getKpiId() {
-        return kpiId;
+    public String getMetricId() {
+        return metricId;
     }
 
     public float getValue() {
