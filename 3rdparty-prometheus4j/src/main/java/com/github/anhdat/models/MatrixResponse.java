@@ -7,7 +7,7 @@ public class MatrixResponse {
     String status;
     MatrixData data;
 
-    static class MatrixData {
+    public static class MatrixData {
         String resultType;
         List<MatrixResult> result;
         
@@ -19,7 +19,7 @@ public class MatrixResponse {
         }
     }
 
-    static class MatrixResult {
+    public static class MatrixResult {
         Map<String, String> metric;
         List<List<Float>> values;
 
