@@ -6,6 +6,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import eu.openaire.mas.delivery.provider.MetricsProvider;
@@ -30,7 +31,8 @@ public class MetricsDeliveryController implements MetricsDelivery {
     @GetMapping("/metrics/{resourceId}/{metricId}/value")
     public MetricEntry deliver(
             @PathVariable(value = "resourceId") String resourceId,
-            @PathVariable(value = "metricId") String metricId) {
+            @PathVariable(value = "metricId") String metricId,
+	    @RequestParam(value = "time", required = false) Long time) {
         return metricsProvider.deliver(resourceId, metricId, null, null);
     }
 
