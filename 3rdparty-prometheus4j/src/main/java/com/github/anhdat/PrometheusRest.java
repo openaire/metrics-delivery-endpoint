@@ -16,6 +16,13 @@ public interface PrometheusRest {
         @Query("timeout") String timeout
     );
 
+    @GET("api/v1/query")
+    Call<MatrixResponse> queryMatrix(
+        @Query("query") String query,
+        @Query("time") String time,
+        @Query("timeout") String timeout
+    );
+
     @GET("api/v1/query_range")
     Call<MatrixResponse> queryRange(
         @Query("query") String query,

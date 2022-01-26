@@ -5,15 +5,17 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import com.github.anhdat.PrometheusApiClient;
+import com.github.anhdat.models.VectorResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
+import org.springframework.expression.Expression;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import com.github.anhdat.PrometheusApiClient;
-import com.github.anhdat.models.VectorResponse;
 
 import eu.openaire.mas.delivery.MetricEntry;
 import eu.openaire.mas.delivery.mapping.MappingNotFoundException;
@@ -38,6 +40,7 @@ public class PrometheusMetricsProvider implements MetricsProvider {
     private PrometheusApiClient prometheusClient;
     
     private static final String STATUS_SUCCESS = "success";
+    private static final String SPEL_PREFIX = "#";
     
     @PostConstruct
     public void initialize() {
@@ -49,20 +52,7 @@ public class PrometheusMetricsProvider implements MetricsProvider {
         try {
             PrometheusMetricMeta meta = mappingProvider.get(resourceId, metricId);
             if (meta!=null) {
-                try {
-                    // FIXME it is just a sample, include "from" and "to" params in querying
-                    VectorResponse resp = prometheusClient.query(meta.getQuery());
-                    if (STATUS_SUCCESS.equals(resp.getStatus())) {
-			float value = resp.getData().getResult().get(0).getValue().get(1);
-                        return new MetricEntry(resourceId, metricId, value);
-                    } else {
-                        throw new RuntimeException(String.format("invalid status: %, full response: %s",
-                                resp.getStatus(), resp));
-                    }
-                } catch (IOException e) {
-                    throw new RuntimeException("unexpected error occurred while communicating with prometheus server", e);
-                }
-                   
+		return runQuery(resourceId, metricId, meta.getQuery());
             } else {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
                         String.format("unable to find query mappings for "
@@ -74,6 +64,33 @@ public class PrometheusMetricsProvider implements MetricsProvider {
                             resourceId, metricId), e);
         }
         
+    }
+
+    private MetricEntry runQuery(String resourceId, String metricId, String query) {
+	try {
+	    if (query.startsWith(SPEL_PREFIX)) {
+		float value = runSpEL(query.substring(SPEL_PREFIX.length()));
+		return new MetricEntry(resourceId, metricId, value);
+	    }
+	    // FIXME it is just a sample, include "from" and "to" params in querying
+	    VectorResponse resp = prometheusClient.query(query);
+	    if (STATUS_SUCCESS.equals(resp.getStatus())) {
+		float value = resp.getData().getResult().get(0).getValue().get(1);
+		return new MetricEntry(resourceId, metricId, value);
+	    } else {
+		throw new RuntimeException(String.format("invalid status: %, full response: %s",
+							 resp.getStatus(), resp));
+	    }
+	} catch (IOException e) {
+	    throw new RuntimeException("unexpected error occurred while communicating with prometheus server", e);
+	}
+    }
+
+    private float runSpEL(String query) {
+	SpelExpressionParser parser = new SpelExpressionParser();
+	Expression exp = parser.parseExpression(query);
+	ExpressionContext ec = new ExpressionContext(prometheusClient);
+	return exp.getValue(ec, Float.class);
     }
 
     @Override

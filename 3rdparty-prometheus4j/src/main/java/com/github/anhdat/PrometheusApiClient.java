@@ -29,6 +29,10 @@ public class PrometheusApiClient {
         return service.query(query, time, null).execute().body();
     }
 
+    public MatrixResponse queryMatrix(String query, String time) throws IOException {
+        return service.queryMatrix(query, time, null).execute().body();
+    }
+
     public VectorResponse query(String query, String time, String timeout) throws IOException {
         return service.query(query, time, timeout).execute().body();
     }
