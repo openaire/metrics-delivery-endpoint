@@ -48,7 +48,7 @@ public class PrometheusMetricsProvider implements MetricsProvider {
     }
     
     @Override
-    public MetricEntry deliver(String resourceId, String metricId, String from, String to) {
+    public MetricEntry deliver(String resourceId, String metricId, long timestamp) {
         try {
             PrometheusMetricMeta meta = mappingProvider.get(resourceId, metricId);
             if (meta!=null) {

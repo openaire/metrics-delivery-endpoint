@@ -15,7 +15,7 @@ public interface MetricsProvider {
     /**
      * Delivers metric details.
      */
-    MetricEntry deliver(String resourceId, String metricId, String from, String to);
+    MetricEntry deliver(String resourceId, String metricId, long timestamp);
     
     /**
      * Lists metric identifiers for a given resource.

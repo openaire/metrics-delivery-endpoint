@@ -33,7 +33,10 @@ public class MetricsDeliveryController implements MetricsDelivery {
             @PathVariable(value = "resourceId") String resourceId,
             @PathVariable(value = "metricId") String metricId,
 	    @RequestParam(value = "time", required = false) Long time) {
-        return metricsProvider.deliver(resourceId, metricId, null, null);
+	if (time == null) {
+	    time = System.currentTimeMillis() / 1000;
+	}
+        return metricsProvider.deliver(resourceId, metricId, time);
     }
 
     @Override

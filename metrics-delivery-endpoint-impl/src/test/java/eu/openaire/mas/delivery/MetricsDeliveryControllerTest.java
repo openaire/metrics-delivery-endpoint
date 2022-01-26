@@ -41,7 +41,7 @@ public class MetricsDeliveryControllerTest {
         String name = "someName";
         float value = 1;
         MetricEntry metricEntry = new MetricEntry(familyId, name, value);
-        Mockito.when(metricsProvider.deliver(familyId, name, null, null)).thenReturn(metricEntry);
+        Mockito.when(metricsProvider.deliver(familyId, name, 0)).thenReturn(metricEntry);
         
         // execute
 	MetricEntry result = metricsDeliveryController.deliver(familyId, name, 0l);

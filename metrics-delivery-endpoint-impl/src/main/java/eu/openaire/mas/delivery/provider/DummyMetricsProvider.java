@@ -21,7 +21,7 @@ public class DummyMetricsProvider implements MetricsProvider {
     private final AtomicLong counter = new AtomicLong();
 
     @Override
-    public MetricEntry deliver(String resourceId, String metricId, String from, String to) {
+    public MetricEntry deliver(String resourceId, String metricId, long timestamp) {
         return new MetricEntry(resourceId, metricId, counter.incrementAndGet());
     }
 
