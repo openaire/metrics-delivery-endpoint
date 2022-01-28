@@ -48,11 +48,11 @@ public class PrometheusMetricsProvider implements MetricsProvider {
     }
     
     @Override
-    public MetricEntry deliver(String resourceId, String metricId, String from, String to) {
+    public MetricEntry deliver(String resourceId, String metricId, long timestamp) {
         try {
             PrometheusMetricMeta meta = mappingProvider.get(resourceId, metricId);
             if (meta!=null) {
-		return runQuery(resourceId, metricId, meta.getQuery());
+		return runQuery(resourceId, metricId, meta.getQuery(), timestamp);
             } else {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
                         String.format("unable to find query mappings for "
@@ -66,14 +66,13 @@ public class PrometheusMetricsProvider implements MetricsProvider {
         
     }
 
-    private MetricEntry runQuery(String resourceId, String metricId, String query) {
+    private MetricEntry runQuery(String resourceId, String metricId, String query, long timestamp) {
 	try {
 	    if (query.startsWith(SPEL_PREFIX)) {
-		float value = runSpEL(query.substring(SPEL_PREFIX.length()));
+		float value = runSpEL(query.substring(SPEL_PREFIX.length()), timestamp);
 		return new MetricEntry(resourceId, metricId, value);
 	    }
-	    // FIXME it is just a sample, include "from" and "to" params in querying
-	    VectorResponse resp = prometheusClient.query(query);
+	    VectorResponse resp = prometheusClient.query(query, ""+timestamp);
 	    if (STATUS_SUCCESS.equals(resp.getStatus())) {
 		float value = resp.getData().getResult().get(0).getValue().get(1);
 		return new MetricEntry(resourceId, metricId, value);
@@ -86,10 +85,10 @@ public class PrometheusMetricsProvider implements MetricsProvider {
 	}
     }
 
-    private float runSpEL(String query) {
+    private float runSpEL(String query, long timestamp) {
 	SpelExpressionParser parser = new SpelExpressionParser();
 	Expression exp = parser.parseExpression(query);
-	ExpressionContext ec = new ExpressionContext(prometheusClient);
+	ExpressionContext ec = new ExpressionContext(prometheusClient, timestamp);
 	return exp.getValue(ec, Float.class);
     }
 

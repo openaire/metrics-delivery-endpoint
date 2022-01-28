@@ -12,9 +12,11 @@ import com.github.anhdat.models.MatrixResponse;
  */
 class ExpressionContext {
     private PrometheusApiClient prometheusClient;
+    private long timestamp;
 
-    ExpressionContext(PrometheusApiClient prometheusClient) {
+    ExpressionContext(PrometheusApiClient prometheusClient, long timestamp) {
 	this.prometheusClient = prometheusClient;
+	this.timestamp = timestamp;
     }
 
     /**
@@ -28,10 +30,9 @@ class ExpressionContext {
      * @return sum of values from the countsSeries matching each distinct value of the stampsSeries
      */
     public float sumPeriods(String countsSeries, String stampsSeries, long from) throws IOException {
-	long now = System.currentTimeMillis() / 1000;
-	String range = "[" + (now - from) +"s]";
-	MatrixResponse rc = prometheusClient.queryMatrix(countsSeries+range, ""+now);
-	MatrixResponse rs = prometheusClient.queryMatrix(stampsSeries+range, ""+now);
+	String range = "[" + (timestamp - from) +"s]";
+	MatrixResponse rc = prometheusClient.queryMatrix(countsSeries+range, ""+timestamp);
+	MatrixResponse rs = prometheusClient.queryMatrix(stampsSeries+range, ""+timestamp);
 	List<List<Float>> stamps = rs.getData().getResult().get(0).getValues();
 	HashSet<Float> uniqueStamps = new HashSet<>();
 	HashSet<Float> uniqueStampsStamps = new HashSet<>();

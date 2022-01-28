@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public interface MetricsDelivery {
 
-    MetricEntry deliver(String resourceId, String metricId);
+    MetricEntry deliver(String resourceId, String metricId, Long timestamp);
 
     ItemList<String> list(String resourceId);
 
