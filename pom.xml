@@ -80,5 +80,9 @@
         <id>iis-releases</id>
         <url>https://maven.ceon.pl/artifactory/iis-releases</url>
       </repository>
-    </distributionManagement>
+      <snapshotRepository>
+        <id>iis-snapshots</id>
+        <url>https://maven.ceon.pl/artifactory/iis-snapshots</url>
+      </snapshotRepository>
+   </distributionManagement>
 </project>
