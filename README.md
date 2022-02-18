@@ -45,6 +45,14 @@ For more complex cases it can reference a custom computation implemented in Java
 
 #### Complex cases
 
+##### Range vectors
+
+In PromQL range vectors are specified by giving their duration. We sometimes need to calculate eg. `increase` over a range that starts a specific point in time instead. For this placing a special "#R#" token instead of the range duration is supported, eg. `{"query": "increase(some_series[#R#])"}`
+
+Before the query is sent to Prometheus the token is replaced with the duration in seconds between the query time and the value of the `counter.range.start` application property.
+
+##### Custom computations
+
 Instead of a PromQL query the `query` can be "#" followed by a [Spring Expression Language](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#expressions) (SpEL) expression.
 
 This is used for cases where a single PromQL query cannot be used to get the interesting value and more complex processing is needed.
