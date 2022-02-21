@@ -33,7 +33,10 @@ public class PrometheusMetricsProvider implements MetricsProvider {
 
     @Value("${prometheus.server.location}")
     private String prometheusServerLocation;
-    
+
+    @Value("${counter.range.start}")
+    private long rangeStart;
+
     @Autowired
     private MappingProvider mappingProvider;
     
@@ -41,7 +44,8 @@ public class PrometheusMetricsProvider implements MetricsProvider {
     
     private static final String STATUS_SUCCESS = "success";
     private static final String SPEL_PREFIX = "#";
-    
+    private static final String RANGE_TOKEN = "#R#";
+
     @PostConstruct
     public void initialize() {
         this.prometheusClient = new PrometheusApiClient(prometheusServerLocation);
@@ -72,6 +76,8 @@ public class PrometheusMetricsProvider implements MetricsProvider {
 		float value = runSpEL(query.substring(SPEL_PREFIX.length()), timestamp);
 		return new MetricEntry(resourceId, metricId, value);
 	    }
+
+	    query = fillQueryRanges(query, timestamp);
 	    VectorResponse resp = prometheusClient.query(query, ""+timestamp);
 	    if (STATUS_SUCCESS.equals(resp.getStatus())) {
 		float value = resp.getData().getResult().get(0).getValue().get(1);
@@ -83,6 +89,11 @@ public class PrometheusMetricsProvider implements MetricsProvider {
 	} catch (IOException e) {
 	    throw new RuntimeException("unexpected error occurred while communicating with prometheus server", e);
 	}
+    }
+
+    private String fillQueryRanges(String query, long timestamp) {
+	String range = (timestamp-rangeStart)+"s";
+	return query.replace(RANGE_TOKEN, range);
     }
 
     private float runSpEL(String query, long timestamp) {
