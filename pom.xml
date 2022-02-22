@@ -26,6 +26,7 @@
         <module>3rdparty-prometheus4j</module>
         <module>metrics-delivery-endpoint-api</module>
         <module>metrics-delivery-endpoint-impl</module>
+        <module>eosc-accounting-system-api-client</module>
     </modules>
 
     <properties>
@@ -59,6 +60,11 @@
                 <groupId>com.squareup.retrofit2</groupId>
                 <artifactId>converter-gson</artifactId>
                 <version>2.9.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>2.1.7</version>
             </dependency>
             <dependency>
                 <groupId>org.junit</groupId>
