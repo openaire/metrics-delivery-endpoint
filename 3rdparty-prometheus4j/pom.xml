@@ -4,7 +4,7 @@
     <parent>
         <groupId>eu.openaire.mas</groupId>
         <artifactId>metrics-delivery-endpoint</artifactId>
-        <version>0.0.2</version>
+        <version>0.0.3-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -12,7 +12,7 @@
     <packaging>jar</packaging>
     <groupId>eu.openaire.mas</groupId>
     <artifactId>3rdparty-prometheus4j</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
