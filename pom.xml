@@ -9,7 +9,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>eu.openaire.mas</groupId>
     <artifactId>metrics-delivery-endpoint</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.2</version>
     <packaging>pom</packaging>
     <name>Metrics Acquisition System RESTful endpoint</name>
 
@@ -72,7 +72,7 @@
 
     <scm>
       <developerConnection>scm:git:ssh://git@github.com/openaire/metrics-delivery-endpoint.git</developerConnection>
-      <tag>HEAD</tag>
+      <tag>metrics-delivery-endpoint-0.0.2</tag>
   </scm>
 
     <distributionManagement>
