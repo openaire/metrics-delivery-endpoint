@@ -42,9 +42,10 @@ pipeline {
                 }
             }
 	    //NOTE: sonar scan is only done for master branch because current Sonar instance does not support branching
+	    //NOTE: Sonar step temporarily removed because the Sonar instance is unavailable
 	    when { branch 'master' }
             steps {
-		sh 'mvn -B sonar:sonar deploy -s deploy-settings.xml -DskipTests -DskipITs -Dsonar.host.url=http://sonar.ceon.pl -Dsonar.login=${SONAR_TOKEN}'
+		sh 'mvn -B deploy -s deploy-settings.xml -DskipTests -DskipITs -Dsonar.host.url=http://sonar.ceon.pl -Dsonar.login=${SONAR_TOKEN}'
             }
         }
     }
