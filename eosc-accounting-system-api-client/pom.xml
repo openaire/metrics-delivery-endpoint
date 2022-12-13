@@ -25,7 +25,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>https://acc.devel.argo.grnet.gr/open-api</inputSpec>
+                            <inputSpec>https://accounting.devel.argo.grnet.gr/open-api</inputSpec>
                             <language>java</language>
                             <library>resttemplate</library>
                             <apiPackage>eu.eosc.accounting-system.client.api</apiPackage>
