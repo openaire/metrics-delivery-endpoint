@@ -1,9 +1,10 @@
 package eu.openaire.mas.eoscaccounting;
 
-import java.util.List;
-
 import eu.eosc.accounting_system.client.api.MetricDefinitionApi;
 import eu.eosc.accounting_system.client.invoker.ApiClient;
+import eu.eosc.accounting_system.client.model.InlineResponse2003;
+import eu.eosc.accounting_system.client.model.InlineResponse2004;
+import eu.eosc.accounting_system.client.model.InlineResponse2005;
 import eu.eosc.accounting_system.client.model.MetricDefinitionResponse;
 
 /**
@@ -22,8 +23,8 @@ public class EoscAccountingAPIManualTest {
         
         // listing available metric definitions
         MetricDefinitionApi metricDefinitionApi = new MetricDefinitionApi(apiClient);
-        List<MetricDefinitionResponse> results = metricDefinitionApi.accountingSystemMetricDefinitionGet();
-        for (MetricDefinitionResponse result : results) {
+        InlineResponse2005 results = metricDefinitionApi.accountingSystemMetricDefinitionsGet(1, 1000);
+        for (MetricDefinitionResponse result : results.getContent()) {
             System.out.println(String.format("metric id: %s", result.getMetricDefinitionId()));
             System.out.println(String.format("metric name: %s", result.getMetricName()));
             System.out.println(String.format("metric type: %s", result.getMetricType()));
