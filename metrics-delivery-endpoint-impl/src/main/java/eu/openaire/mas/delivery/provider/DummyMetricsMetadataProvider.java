@@ -17,7 +17,7 @@ public class DummyMetricsMetadataProvider implements MetricsMetadataProvider {
 
     @Override
     public MetricMetadata describe(String resourceId, String metricId) {
-	return new MetricMetadata(resourceId+" "+metricId, "Lorem ipsum...", "attoparsec", MetricKind.STATE);
+	return new MetricMetadata(resourceId+" "+metricId, "Lorem ipsum...", "attoparsec", MetricKind.STATE, null);
     }
 
     @Override
@@ -30,4 +30,9 @@ public class DummyMetricsMetadataProvider implements MetricsMetadataProvider {
 
 	return result;
     }
+
+	@Override
+	public String getEoscInstallationId(String resourceId) {
+		return null;
+	}
 }

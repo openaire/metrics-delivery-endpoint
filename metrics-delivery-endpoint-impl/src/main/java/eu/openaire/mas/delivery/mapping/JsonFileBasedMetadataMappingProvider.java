@@ -35,6 +35,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import eu.openaire.mas.delivery.MetricMetadata;
+import eu.openaire.mas.delivery.ResourceMetadata;
 import eu.openaire.mas.delivery.provider.MetricsMetadataProvider;
 
 /**
@@ -52,7 +53,7 @@ public class JsonFileBasedMetadataMappingProvider implements MetricsMetadataProv
     /**
      * Internal mapping identified by resourceId and metricId on a 2nd map level.
      */
-    private Map<String, Map<String,MetricMetadata>> metadataMappings = new ConcurrentHashMap<String, Map<String,MetricMetadata>>();
+    private Map<String, ResourceMetadata> metadataMappings = new ConcurrentHashMap<>();
 
     private ExecutorService fileWatcherExecutorService;
 
@@ -82,7 +83,7 @@ public class JsonFileBasedMetadataMappingProvider implements MetricsMetadataProv
     }
 
     private MetricMetadata get(String resourceId, String metricId) throws MappingNotFoundException {
-        Map<String, MetricMetadata> resourceMap = metadataMappings.get(resourceId);
+        Map<String, MetricMetadata> resourceMap = getMetricsMap(resourceId);
         if (resourceMap != null) {
             MetricMetadata result = resourceMap.get(metricId);
             if (result != null) {
@@ -97,7 +98,7 @@ public class JsonFileBasedMetadataMappingProvider implements MetricsMetadataProv
     }
 
     private Set<String> listMetrics(String resourceId) throws MappingNotFoundException {
-        Map<String, MetricMetadata> resourceMap = metadataMappings.get(resourceId);
+        Map<String, MetricMetadata> resourceMap = getMetricsMap(resourceId);
         if (resourceMap != null) {
             return resourceMap.keySet();
         } else {
@@ -132,16 +133,33 @@ public class JsonFileBasedMetadataMappingProvider implements MetricsMetadataProv
 	return result;
     }
 
+	@Override
+	public String getEoscInstallationId(String resourceId) {
+		ResourceMetadata resource = metadataMappings.get(resourceId);
+		if (resource != null) {
+			return resource.getEoscInstallationId();
+		}
+		return null;
+	}
+
+	private Map<String, MetricMetadata> getMetricsMap(String resourceId) {
+		ResourceMetadata resource = metadataMappings.get(resourceId);
+		if (resource != null) {
+			return resource.getMetrics();
+		}
+		return null;
+	}
+
     /**
      * Initializes in-memory mappings with the corresponding mapping file contents.
      */
     private void initializeMappings() {
         try {
             log.info("loading mappings from file: " + fileLocation.getURI().toString());
-            Map<String, Map<String, MetricMetadata>> readMap = getMap(getResourceFileAsString(fileLocation));
+            Map<String, ResourceMetadata> readMap = getMap(getResourceFileAsString(fileLocation));
             metadataMappings.clear();
-            for (Entry<String, Map<String, MetricMetadata>> entry : readMap.entrySet()) {
-                metadataMappings.put(entry.getKey(), new ConcurrentHashMap<String, MetricMetadata>(entry.getValue()));
+            for (Entry<String, ResourceMetadata> entry : readMap.entrySet()) {
+                metadataMappings.put(entry.getKey(), entry.getValue());
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -158,9 +176,9 @@ public class JsonFileBasedMetadataMappingProvider implements MetricsMetadataProv
     /**
      * Converts mappings defined as JSON into the object representation.
      */
-    static Map<String, Map<String, MetricMetadata>> getMap(String jsonContent) {
+    static Map<String, ResourceMetadata> getMap(String jsonContent) {
         Gson gson = new Gson();
-        java.lang.reflect.Type empMapType = new TypeToken<Map<String, Map<String, MetricMetadata>>>() {}.getType();
+        java.lang.reflect.Type empMapType = new TypeToken<Map<String, ResourceMetadata>>() {}.getType();
         return gson.fromJson(jsonContent, empMapType);
     }
 
