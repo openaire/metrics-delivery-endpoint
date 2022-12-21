@@ -6,6 +6,10 @@ Metrics Acquisition System RESTful endpoint
 The metrics definitions come from two JSON files: `metadata_mappings.json` and `metrics_mappings.json`.
 Their location is determined by the `config.directory` application property - `${user.home}/mas` by default.
 
+Other application properties:
+* `prometheus.server.location` - base URL of the Prometheus server to use
+* `counter.range.start` - start time for range vectors (see details below) as a Unix timestamp in seconds
+
 ### Metadata mappings
 
 This file contains the metric descriptions returned by `/metrics/{resourceId}/{metricId}`.
