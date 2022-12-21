@@ -8,6 +8,8 @@ import javax.annotation.PostConstruct;
 import com.github.anhdat.PrometheusApiClient;
 import com.github.anhdat.models.VectorResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
@@ -30,6 +32,8 @@ import eu.openaire.mas.delivery.mapping.PrometheusMetricMeta;
 @Primary
 @Service
 public class PrometheusMetricsProvider implements MetricsProvider {
+
+    private static Logger log = LoggerFactory.getLogger(PrometheusMetricsProvider.class);
 
     @Value("${prometheus.server.location}")
     private String prometheusServerLocation;
@@ -78,6 +82,7 @@ public class PrometheusMetricsProvider implements MetricsProvider {
 	    }
 
 	    query = fillQueryRanges(query, timestamp);
+	    log.debug("query={} @ timestamp={}", query, timestamp);
 	    VectorResponse resp = prometheusClient.query(query, ""+timestamp);
 	    if (STATUS_SUCCESS.equals(resp.getStatus())) {
 		float value = resp.getData().getResult().get(0).getValue().get(1);

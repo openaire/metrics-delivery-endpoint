@@ -15,4 +15,11 @@ public interface MetricsMetadataProvider {
      * Returns metric metadata for all metrics of a resource
      */
     Map<String, MetricMetadata> describeAll(String resourceId);
+
+    /**
+     * Returns the EOSC Accounting installation id for a resource
+     *
+     * @return the installation id, <code>null</code> if not configured
+     */
+	String getEoscInstallationId(String resourceId);
 }
