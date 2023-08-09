@@ -12,7 +12,6 @@ pipeline {
     }
 
     environment {
-	SONAR_TOKEN=credentials('sonar-token')
 	ARTIFACTORY_DEPLOY=credentials('artifactory-deploy')
     }
     stages {
@@ -34,17 +33,16 @@ pipeline {
 		}
 	    }
         }
-        stage('Sonar & Deploy') {
+        stage('Deploy') {
             agent {
                 docker {
                     image "maven:3-jdk-8"
 		    reuseNode true
                 }
             }
-	    //NOTE: sonar scan is only done for master branch because current Sonar instance does not support branching
 	    when { branch 'master' }
             steps {
-		sh 'mvn -B sonar:sonar deploy -s deploy-settings.xml -DskipTests -DskipITs -Dsonar.host.url=http://sonar.ceon.pl -Dsonar.login=${SONAR_TOKEN}'
+		sh 'mvn -B deploy -s deploy-settings.xml -DskipTests -DskipITs'
             }
         }
     }
